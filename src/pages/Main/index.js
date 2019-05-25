@@ -8,7 +8,7 @@ import uuid from 'uuid/v1';
 import Header from '~/components/Header';
 import SubTitle from '~/components/SubTitle';
 import Input from '~/components/Input';
-
+import List from '~/components/List';
 import styles from './styles';
 
 const headerTitle = 'Lista de tarefas';
@@ -18,111 +18,110 @@ export default class Main extends React.Component {
     inputValue: '',
     loadingItems: false,
     allItems: {},
-    isCompleted: false
+    isCompleted: false,
   };
-	
-	componentDidMount = () => {
-		this.loadingItems();
-	};
-	
-	newInputValue = value => {
-		this.setState({
-			inputValue: value
-		});
-	};
 
-	loadingItems = async () => {
-		try {
-			const allItems = await AsyncStorage.getItem('Todos');
-		
-			this.setState({
-				loadingItems: true,
-				allItems: JSON.parse(allItems) || {}
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	};
-	
-	onDoneAddItem = () => {
-		
-		const { inputValue } = this.state;
-		if (inputValue !== '') {
-			this.setState(prevState => {
-				const id = uuid();
-				const newItemObject = {
-					[id]: {
-						id,
-						isCompleted: false,
-						text: inputValue,
-						createdAt: Date.now()
-					}
-				};
-				const newState = {
-					...prevState,
-					inputValue: '',
-					allItems: {
-						...prevState.allItems,
-						...newItemObject
-					}
-				};
-				this.saveItems(newState.allItems);
-				return { ...newState };
-	    });
-		}
-	};
+  componentDidMount = () => {
+    this.loadingItems();
+  };
 
-	saveItems = (newItem) => {
-		// alert('Voce colocou a informacao: ' + JSON.stringify(newItem))
-		const saveItem = AsyncStorage.setItem('Todos', JSON.stringify(newItem));
-	};
+  newInputValue = (value) => {
+    this.setState({
+      inputValue: value,
+    });
+  };
 
-	deleteItem = id => {
-		this.setState(prevState => {
-			const allItems = prevState.allItems;
-			delete allItems[id];
-			const newState = {
-				...prevState,
-				...allItems
-			};
-			this.saveItems(newState.allItems);
-			return { ...newState };
-		});
-	};
+  loadingItems = async () => {
+    try {
+      const allItems = await AsyncStorage.getItem('Todos');
 
-	completeItem = id => {
-		this.setState(prevState => {
-			const newState = {
-				...prevState,
-				allItems: {
-					...prevState.allItems,
-					[id]: {
-						...prevState.allItems[id],
-						isCompleted: true
-					}
-				}
-			};
-			this.saveItems(newState.allItems);
-			return { ...newState };
-		});
-	};
+      this.setState({
+        loadingItems: true,
+        allItems: JSON.parse(allItems) || {},
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-	incompleteItem = id => {
-		this.setState(prevState => {
-			const newState = {
-				...prevState,
-				allItems: {
-					...prevState.allItems,
-					[id]: {
-						...prevState.allItems[id],
-						isCompleted: false
-					}
-				}
-			};
-			this.saveItems(newState.allItems);
-			return { ...newState };
-		});
-	};
+  onDoneAddItem = () => {
+    const { inputValue } = this.state;
+    if (inputValue !== '') {
+      this.setState((prevState) => {
+        const id = uuid();
+        const newItemObject = {
+          [id]: {
+            id,
+            isCompleted: false,
+            text: inputValue,
+            createdAt: Date.now(),
+          },
+        };
+        const newState = {
+          ...prevState,
+          inputValue: '',
+          allItems: {
+            ...prevState.allItems,
+            ...newItemObject,
+          },
+        };
+        this.saveItems(newState.allItems);
+        return { ...newState };
+      });
+    }
+  };
+
+  saveItems = (newItem) => {
+    // alert('Voce colocou a informacao: ' + JSON.stringify(newItem))
+    const saveItem = AsyncStorage.setItem('Todos', JSON.stringify(newItem));
+  };
+
+  deleteItem = (id) => {
+    this.setState((prevState) => {
+      const { allItems } = prevState;
+      delete allItems[id];
+      const newState = {
+        ...prevState,
+        ...allItems,
+      };
+      this.saveItems(newState.allItems);
+      return { ...newState };
+    });
+  };
+
+  completeItem = (id) => {
+    this.setState((prevState) => {
+      const newState = {
+        ...prevState,
+        allItems: {
+          ...prevState.allItems,
+          [id]: {
+            ...prevState.allItems[id],
+            isCompleted: true,
+          },
+        },
+      };
+      this.saveItems(newState.allItems);
+      return { ...newState };
+    });
+  };
+
+  incompleteItem = (id) => {
+    this.setState((prevState) => {
+      const newState = {
+        ...prevState,
+        allItems: {
+          ...prevState.allItems,
+          [id]: {
+            ...prevState.allItems[id],
+            isCompleted: false,
+          },
+        },
+      };
+      this.saveItems(newState.allItems);
+      return { ...newState };
+    });
+  };
 
   render() {
     const { inputValue, loadingItems, allItems } = this.state;
@@ -131,46 +130,44 @@ export default class Main extends React.Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <View style={styles.centered}>
-		      <Header title={headerTitle} />
+          <Header title={headerTitle} />
         </View>
         <View style={styles.inputContainer}>
-          <SubTitle subtitle={"Qual a novidade ?"} />
+          <SubTitle subtitle="Qual a novidade ?" />
           <Input
-						inputValue={inputValue}
-						onChangeText={this.newInputValue}
+            inputValue={inputValue}
+            onChangeText={this.newInputValue}
             onDoneAddItem={this.onDoneAddItem}
           />
         </View>
-				
-				<View style={styles.list}>
-					<View style={styles.column}>
-						{/* <SubTitle subtitle={'Recent Notes'} />
+
+        <View style={styles.list}>
+          <View style={styles.column}>
+            {/* <SubTitle subtitle={'Recent Notes'} />
 						<View style={styles.deleteAllButton}>
 							<Button deleteAllItems={this.deleteAllItems} />
 						</View> */}
-					</View>
+          </View>
 
-					{loadingItems ? (
-						<ScrollView contentContainerStyle={styles.scrollableList}>
-							{Object.values(allItems)
-								.reverse()
-								.map(item => (
-									<List
-										key={item.id}
-										{...item}
-										deleteItem={this.deleteItem}
-										completeItem={this.completeItem}
-										incompleteItem={this.incompleteItem}
-									/>
-								))}
-						</ScrollView>
-					) : (
-						<ActivityIndicator size="large" color="white" />
-					)}
-				</View>
-
-		  </View>
-      
+          {loadingItems ? (
+            <ScrollView contentContainerStyle={styles.scrollableList}>
+              {Object.values(allItems)
+                .reverse()
+                .map(item => (
+                  <List
+                    key={item.id}
+                    {...item}
+                    deleteItem={this.deleteItem}
+                    completeItem={this.completeItem}
+                    incompleteItem={this.incompleteItem}
+                  />
+                ))}
+            </ScrollView>
+          ) : (
+            <ActivityIndicator size="large" color="white" />
+          )}
+        </View>
+      </View>
     );
   }
 }
