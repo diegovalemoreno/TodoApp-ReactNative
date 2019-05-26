@@ -8,7 +8,7 @@ export default {
   itemListTextStrike: '#c4c4cc',
   deleteIconColor: '#bc2e4c',
   white: '#ffffff',
-  primary: '#FF9500',
+  primary: '#4169E1',
   secundary: '#444A54',
   success: '#9DCA83',
   danger: '#E37A7A',
