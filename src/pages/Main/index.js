@@ -9,6 +9,7 @@ import Header from '~/components/Header';
 import SubTitle from '~/components/SubTitle';
 import Input from '~/components/Input';
 import List from '~/components/List';
+import Button from '~/components/Button';
 import styles from './styles';
 
 const headerTitle = 'Lista de tarefas';
@@ -71,8 +72,16 @@ export default class Main extends React.Component {
     }
   };
 
+  deleteAllItems = async () => {
+    try {
+      await AsyncStorage.removeItem('Todos');
+      this.setState({ allItems: {} });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   saveItems = (newItem) => {
-    // alert('Voce colocou a informacao: ' + JSON.stringify(newItem))
     const saveItem = AsyncStorage.setItem('Todos', JSON.stringify(newItem));
   };
 
@@ -143,10 +152,10 @@ export default class Main extends React.Component {
 
         <View style={styles.list}>
           <View style={styles.column}>
-            {/* <SubTitle subtitle={'Recent Notes'} />
-						<View style={styles.deleteAllButton}>
-							<Button deleteAllItems={this.deleteAllItems} />
-						</View> */}
+            <SubTitle subtitle="Recent Notes" />
+            <View style={styles.deleteAllButton}>
+              <Button deleteAllItems={this.deleteAllItems} />
+            </View>
           </View>
 
           {loadingItems ? (

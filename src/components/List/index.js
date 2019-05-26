@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {
+  View, Text, TouchableOpacity, Platform,
+} from 'react-native';
 // import { MaterialIcons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import styles from './styles';
 // import {
 //   itemListText,
@@ -46,10 +50,7 @@ class List extends Component {
             style={[
               styles.text,
               isCompleted
-                ? {
-                  color: colors.itemListTextStrike,
-                  textDecorationLine: 'line-through',
-                }
+                ? { color: colors.itemListTextStrike, textDecorationLine: 'line-through' }
                 : { color: colors.itemListText },
             ]}
           >
@@ -58,9 +59,14 @@ class List extends Component {
         </View>
         {isCompleted ? (
           <View style={styles.button}>
-            {/* <TouchableOpacity onPressOut={() => deleteItem(id)}>
-              <MaterialIcons name="delete-forever" size={24} color={colors.deleteIconColor} />
-            </TouchableOpacity> */}
+            <TouchableOpacity onPressOut={() => deleteItem(id)}>
+              <Icon
+                name={Platform.OS === 'ios' ? 'ios-remove-circle' : 'md-remove-circle'}
+                color={colors.deleteIconColor}
+                size={25}
+              />
+              {/* <MaterialIcons name="delete-forever" size={24} color={colors.deleteIconColor} /> */}
+            </TouchableOpacity>
           </View>
         ) : null}
       </View>

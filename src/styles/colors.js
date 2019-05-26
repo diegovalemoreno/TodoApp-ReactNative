@@ -8,12 +8,12 @@ export default {
   itemListTextStrike: '#c4c4cc',
   deleteIconColor: '#bc2e4c',
   white: '#ffffff',
-  primary: "#7A91CA",
-  secundary: "#444A54",
-  success: "#9DCA83",
-  danger: "#E37A7A",
+  primary: '#FF9500',
+  secundary: '#444A54',
+  success: '#9DCA83',
+  danger: '#E37A7A',
 
-  transparent: "transparent",
-  darkTransparent: "rgba(0, 0, 0, 0.6)",
-  whiteTransparent: "rgba(255, 255, 255, 0.3)"
+  transparent: 'transparent',
+  darkTransparent: 'rgba(0, 0, 0, 0.6)',
+  whiteTransparent: 'rgba(255, 255, 255, 0.3)',
 };
